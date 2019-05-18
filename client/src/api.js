@@ -10,9 +10,18 @@ So we setup the handler for timer event first and then emit the subscribing even
 
 */
 
-function subscribeToTimer(cb) {
-    socket.on('timer', timestamp => cb(timestamp));
-    socket.emit('subscribeToTimer', 1000);
+function subscribeToDrawings(cb) {
+    socket.on('drawing', cb);
+    socket.emit('subscribeToDrawings');
 }
 
-export default subscribeToTimer;
+
+function createDrawing(name) {
+    socket.emit('createDrawing', { name });
+}
+
+
+export {
+    createDrawing,
+    subscribeToDrawings,
+} 

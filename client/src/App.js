@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import subscribeToTimer from './api';
+import DrawingForm from './DrawingForm';
+// import subscribeToTimer from './api';
 
 /*
 
@@ -12,19 +13,6 @@ So everytime server emits a timer event, the action function is triggered whose 
 
 class App extends Component {
 
-  constructor(props){
-    super(props);
-    subscribeToTimer(this.setTimestamp);
-    this.state = {
-      timestamp: "No Timestamp yet"
-    }
-  }
-
-  setTimestamp = (timestamp) => {
-    this.setState({
-      timestamp
-    })
-  }
 
   render() {
     return (
@@ -32,7 +20,9 @@ class App extends Component {
         <div className="App-header">
           <h2>Our awesome drawing app</h2>
         </div>
-        This is the value of the timer timestamp: {this.state.timestamp}
+
+        <DrawingForm/>
+
       </div>
     );
   }

@@ -11,6 +11,17 @@ function createDrawing({ connection, name }) {
     .then(() => console.log(`Created a drawing with the name ${name}`))
 }
 
+
+function subscribeToDrawings({ client, connection }) {
+    r.table('drawings')
+    .changes({ include_initial: true })
+    .run(connection)
+    .then((cursor) => {
+        cursor.each((err, drawingRow) => client.emit('drawing', drawingRow.new_val))
+    })
+}
+
+
 r.connect({
     host: 'localhost',
     port: '28015',
@@ -19,9 +30,14 @@ r.connect({
     io.on('connect', (client) => {
         client.on('createDrawing', ({name}) => {
             createDrawing({ connection, name });
-        })
-    })
-})
+        });
+
+        client.on('subscribeToDrawings', () => subscribeToDrawings({ 
+            client, 
+            connection 
+        }));
+    });
+});
 
 
 

@@ -5,12 +5,14 @@ const r = require('rethinkdb');
 r.connect({
     host: 'localhost',
     port: 28015,
-    db: 'live-sketch',
+    db: 'live_sketch',
 }).then((connection) => {
+    console.log(`connected to db ${connection.db}`);
+    // console.log(connection);
     io.on('connection', (client) => {           // only accept new socket connections after rethinkdb connection
         client.on("subscribeToTimer", (interval) => {
             console.log(`client is subscribing to timer with interval ${interval}`);
-            r.tables('timers') //when client subscribes to this subscribeToTimer event, we open up a new query on rethinkdb
+            r.table('timers') //when client subscribes to this subscribeToTimer event, we open up a new query on rethinkdb
             .changes()          // and lookout (subscribe) for changes
             .run(connection)    // then run the query, passing it the connection from r.connect which returns a promise
             .then((cursor) => {

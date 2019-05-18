@@ -10,9 +10,9 @@ So we setup the handler for timer event first and then emit the subscribing even
 
 */
 
-subscribeToTimer = (cb) => {
+function subscribeToTimer(cb) {
     socket.on('timer', timestamp => cb(timestamp));
-    socket.emit('subscribeToTimer', 3000);
+    socket.emit('subscribeToTimer', 1000);
 }
 
 export default subscribeToTimer;

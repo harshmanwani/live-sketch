@@ -1,6 +1,50 @@
 const io = require('socket.io')();
 const r = require('rethinkdb');
 
+function createDrawing({ connection, name }) {
+    r.table('drawings')
+    .insert({
+        name,
+        timestamp: new Date()
+    })
+    .run(connection)
+    .then(() => console.log(`Created a drawing with the name ${name}`))
+}
+
+r.connect({
+    host: 'localhost',
+    port: '28015',
+    db: 'live_sketch'
+}).then((connection) => {
+    io.on('connect', (client) => {
+        client.on('createDrawing', ({name}) => {
+            createDrawing({ connection, name });
+        })
+    })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const port = 8000;
+io.listen(8000);
+
+console.log(`listening on port ${port}`)
+
+/*
 //opens a new rethinkdb connection, returns a promise on success
 r.connect({
     host: 'localhost',
@@ -24,6 +68,7 @@ r.connect({
         });
     });
 });
+*/
 
 /*
 Socket works on events. We define actions based on the events trigger.
@@ -44,8 +89,3 @@ value from client, which we then use to emit an event to the client in that inte
 })
 
 */
-
-const port = 8000;
-io.listen(8000);
-
-console.log(`listening on port ${port}`)

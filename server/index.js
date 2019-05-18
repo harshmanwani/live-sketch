@@ -7,8 +7,8 @@ Here, on connection establishment we pass client info in a callback.
 Which subscribes to an client-event named 'subscribeToTimer'. It also receives an interval
 value from client, which we then use to emit an event to the client in that interval.
 
- client.on -> subscribe to an event
- client.emit -> push an event
+ .on -> subscribe to an event
+ .emit -> publish an event
 
 */
 

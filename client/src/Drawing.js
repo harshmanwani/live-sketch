@@ -1,6 +1,6 @@
 import React from 'react';
 import Canvas from 'simple-react-canvas';
-import publishLine from './api';
+import { publishLine } from './api';
 
 export const Drawing = ({ drawing }) => {
     

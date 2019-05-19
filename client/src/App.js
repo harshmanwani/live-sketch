@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import DrawingForm from './DrawingForm';
 import DrawingList from './DrawingList';
+import { Drawing } from './Drawing';
 // import subscribeToTimer from './api';
 
 /*
@@ -13,7 +14,18 @@ So everytime server emits a timer event, the action function is triggered whose 
 */
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      selectedDrawing: ''
+    }
+  }
 
+  selectDrawing = (selectedDrawing) => {
+    this.setState({
+      selectedDrawing
+    })
+  }
 
   render() {
     return (
@@ -22,8 +34,20 @@ class App extends Component {
           <h2>Our awesome drawing app</h2>
         </div>
 
-        <DrawingForm/>
-        <DrawingList/>
+        {
+          this.state.selectedDrawing
+          ? <Drawing 
+              drawing={this.state.selectedDrawing}
+              key={this.state.selectedDrawing.id}
+          />
+          : <div>
+              <DrawingForm/>
+              <DrawingList
+                selectDrawing={this.selectDrawing}
+              />
+          </div>
+        }
+
 
       </div>
     );

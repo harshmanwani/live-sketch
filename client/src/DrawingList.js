@@ -27,6 +27,7 @@ class DrawingList extends Component {
                     <li
                         className="DrawingList-item"
                         key={drawing.id}
+                        onClick={e => this.props.selectDrawing(drawing)}
                     >
                         {drawing.name}
                     </li>

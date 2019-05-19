@@ -23,7 +23,7 @@ class DrawingList extends Component {
 
         return (
             <ul className="DrawingList">
-                {this.state.drawings.length && this.state.drawings.map(drawing => (
+                {this.state.drawings.map(drawing => (
                     <li
                         className="DrawingList-item"
                         key={drawing.id}

@@ -23,7 +23,7 @@ function subscribeToDrawings({ client, connection }) {
 
 
 function handlePublishLines({ line, connection }) {
-    console.log("saving lines to the db")
+    // console.log("saving lines to the db")
     
     r.table('lines')
     .insert({ ...line, timestamp: new Date() })
@@ -31,9 +31,9 @@ function handlePublishLines({ line, connection }) {
 }
 
 
-function subscribeToDrawingLines({ client, connection, drawingId }) {
+function subscribeToDrawingLines1({ client, connection, drawingId }) {
     return (
-        r.tables('lines')
+        r.table('lines')
         .filter(r.row('drawingId').eq(drawingId))
         .changes({ include_initial: true })
         .run(connection)
@@ -44,6 +44,19 @@ function subscribeToDrawingLines({ client, connection, drawingId }) {
             });
         })
     );
+}
+
+function subscribeToDrawingLines({ client, connection, drawingId }) {
+    return r.table('lines')
+        .filter(r.row('drawingId').eq(drawingId))
+        .changes({ include_initial: true, include_types: true })
+        .run(connection)
+        .then((cursor) => {
+            cursor.each((err, lineRow) => {
+                console.log("emitting changes")
+                client.emit(`drawingLine:${drawingId}`, lineRow.new_val)
+            });
+        });
 }
 
 
@@ -68,13 +81,21 @@ r.connect({
             connection
         }))
 
+        // client.on('subscribeToDrawingLines', (drawingId) => {
+        //     subscribeToDrawingLines({
+        //         client,
+        //         connection,
+        //         drawingId
+        //     })
+        // });
+
         client.on('subscribeToDrawingLines', (drawingId) => {
             subscribeToDrawingLines({
                 client,
                 connection,
-                drawingId
-            })
-        })
+                drawingId,
+            });
+        });
     });
 });
 

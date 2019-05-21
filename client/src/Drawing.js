@@ -44,7 +44,6 @@ export class Drawing extends Component {
 
     componentDidMount() {
         subscribeToDrawingLines(this.props.drawing.id, (linesEvent) => {
-            console.log("cb called")
             this.setState((prevState) => {
                 return {
                     lines: [...prevState.lines, ...linesEvent.lines],

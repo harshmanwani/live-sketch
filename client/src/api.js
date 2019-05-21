@@ -1,4 +1,5 @@
 import openSocket from 'socket.io-client';
+import * as Rx from 'rxjs/Rx'
 const socket = openSocket('http://localhost:8000');
 
 /*
@@ -11,7 +12,7 @@ So we setup the handler for timer event first and then emit the subscribing even
 */
 
 function subscribeToDrawings(cb) {
-    socket.on('drawing', cb);
+    socket.on('drawing', drawing => cb(drawing));
     socket.emit('subscribeToDrawings');
 }
 
@@ -26,8 +27,19 @@ function createDrawing(name) {
  }
 
 
- function subscribeToDrawingLines({ drawingId, cb }) {
-    socket.on(`drawingLine:${drawingId}`, cb);
+ function subscribeToDrawingLines( drawingId, cb ) {
+
+    const lineStream = Rx.Observable.fromEventPattern(
+        h => socket.on(`drawingLine:${drawingId}`, h),
+        h => socket.off(`drawingLine:${drawingId}`, h),
+    )
+
+    const bufferedTimeStream = lineStream
+    .bufferTime(100)
+    .map(lines => ({ lines }));
+
+    bufferedTimeStream.subscribe(linesEvent => cb(linesEvent));
+
     socket.emit('subscribeToDrawingLines', drawingId);
  }
 

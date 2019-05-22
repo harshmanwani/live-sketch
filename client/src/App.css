@@ -49,6 +49,12 @@ body {
    background-color: #444;
    color: #fff;
    font-weight: 100;
+   display: flex;
+   justify-content: space-between;
+}
+
+#close-btn {
+  cursor: pointer;
 }
 
 .Form {

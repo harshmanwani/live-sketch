@@ -27,6 +27,13 @@ class App extends Component {
     })
   }
 
+  closeDrawing = () => {
+    console.log("closing drawing");
+    this.setState({
+      selectDrawing: ''
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -39,6 +46,7 @@ class App extends Component {
           ? <Drawing 
               drawing={this.state.selectedDrawing}
               key={this.state.selectedDrawing.id}
+              closeDrawing={this.closeDrawing}
           />
           : <div>
               <DrawingForm/>

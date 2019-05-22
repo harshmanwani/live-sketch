@@ -3,7 +3,7 @@ import Canvas from 'simple-react-canvas';
 // import CanvasDraw from "react-canvas-draw";
 import { publishLine, subscribeToDrawingLines } from './api';
 
-export const Drawing = ({ drawing }) => {
+export const Drawing = ({ drawing, closeDrawing }) => {
     
     const [lines, setLines] = useState([]);
 
@@ -33,7 +33,15 @@ export const Drawing = ({ drawing }) => {
     // }
     
     return <div className="Drawing">
-        <div className="Drawing-title">{drawing.name}</div>
+
+        <div className="Drawing-title">
+            <span>
+                {drawing.name}
+            </span>
+            <span onClick={() => closeDrawing()} id="close-btn">
+                [x]
+            </span>
+        </div>
 
         {/* <CanvasDraw
             {...defaultCanvas}

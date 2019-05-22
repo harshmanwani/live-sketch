@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Canvas from 'simple-react-canvas';
+import CanvasDraw from "react-canvas-draw";
 import { publishLine, subscribeToDrawingLines } from './api';
 
 export const Drawing = ({ drawing }) => {
@@ -8,7 +9,7 @@ export const Drawing = ({ drawing }) => {
 
     useEffect(() => {
             subscribeToDrawingLines(drawing.id, updateLines)
-    }, [])
+    })
 
     const updateLines = (linesEvent) => {
         setLines(
@@ -27,11 +28,12 @@ export const Drawing = ({ drawing }) => {
     
     return <div className="Drawing">
         <div className="Drawing-title">{drawing.name}</div>
-        <Canvas 
+        <CanvasDraw/>
+        {/* <Canvas 
             drawingEnabled={true}
             onDraw={handleDraw}
             lines={lines}
-        />
+        /> */}
     </div>
 }
 

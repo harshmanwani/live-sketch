@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Canvas from 'simple-react-canvas';
-import CanvasDraw from "react-canvas-draw";
+// import CanvasDraw from "react-canvas-draw";
 import { publishLine, subscribeToDrawingLines } from './api';
 
 export const Drawing = ({ drawing }) => {
@@ -25,15 +25,26 @@ export const Drawing = ({ drawing }) => {
             line,
         })
     }
+
+    // const defaultCanvas = {
+    //     canvasWidth: '100vw',
+    //     canvasHeight: '100vh',
+    //     brushRadius: 8
+    // }
     
     return <div className="Drawing">
         <div className="Drawing-title">{drawing.name}</div>
-        <CanvasDraw/>
-        {/* <Canvas 
+
+        {/* <CanvasDraw
+            {...defaultCanvas}
+        /> */}
+
+
+        <Canvas 
             drawingEnabled={true}
             onDraw={handleDraw}
             lines={lines}
-        /> */}
+        />
     </div>
 }
 

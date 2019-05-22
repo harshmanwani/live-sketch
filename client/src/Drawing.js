@@ -2,23 +2,21 @@ import React, { useState, useEffect, Component } from 'react';
 import Canvas from 'simple-react-canvas';
 import { publishLine, subscribeToDrawingLines } from './api';
 
-export const Drawing1 = ({ drawing }) => {
+export const Drawing = ({ drawing }) => {
     
     const [lines, setLines] = useState([]);
 
     useEffect(() => {
-        console.log(drawing)
-        subscribeToDrawingLines(drawing.id, (line) => setLines([...lines, line]))
-    }, [lines, drawing])
+            subscribeToDrawingLines(drawing.id, updateLines)
+    }, [])
 
-    // const updateLines = (line) => {
-    //     setLines(
-    //         [
-    //             ...lines,
-    //             line
-    //         ]
-    //     )
-    // }
+    const updateLines = (linesEvent) => {
+        setLines(
+            [
+                ...lines, ...linesEvent.lines
+            ]    
+        )
+    }
 
     const handleDraw = (line) => {
         publishLine({
@@ -37,42 +35,42 @@ export const Drawing1 = ({ drawing }) => {
     </div>
 }
 
-export class Drawing extends Component {
-    state = {
-        lines: [],
-    }
+// class Drawing2 extends Component {
+//     state = {
+//         lines: [],
+//     }
 
-    componentDidMount() {
-        subscribeToDrawingLines(this.props.drawing.id, (linesEvent) => {
-            this.setState((prevState) => {
-                return {
-                    lines: [...prevState.lines, ...linesEvent.lines],
-                };
-            });
-        });
-    }
+//     componentDidMount() {
+//         subscribeToDrawingLines(this.props.drawing.id, (linesEvent) => {
+//             this.setState((prevState) => {
+//                 return {
+//                     lines: [...prevState.lines, ...linesEvent.lines],
+//                 };
+//             });
+//         });
+//     }
 
-    handleDraw = (line) => {
-        publishLine({
-            drawingId: this.props.drawing.id,
-            line,
-        });
-    }
+//     handleDraw = (line) => {
+//         publishLine({
+//             drawingId: this.props.drawing.id,
+//             line,
+//         });
+//     }
 
-    render() {
-        return (this.props.drawing) ? (
-            <div
-                className="Drawing"
-            >
-                <div className="Drawing-title">{this.props.drawing.name}</div>
-                <Canvas
-                    onDraw={this.handleDraw}
-                    drawingEnabled={true}
-                    lines={this.state.lines}
-                />
-            </div>
-        ) : null;
-    }
-}
+//     render() {
+//         return (this.props.drawing) ? (
+//             <div
+//                 className="Drawing"
+//             >
+//                 <div className="Drawing-title">{this.props.drawing.name}</div>
+//                 <Canvas
+//                     onDraw={this.handleDraw}
+//                     drawingEnabled={true}
+//                     lines={this.state.lines}
+//                 />
+//             </div>
+//         ) : null;
+//     }
+// }
 
 // export default Drawing;

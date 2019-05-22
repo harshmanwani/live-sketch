@@ -53,7 +53,7 @@ function subscribeToDrawingLines({ client, connection, drawingId }) {
         .run(connection)
         .then((cursor) => {
             cursor.each((err, lineRow) => {
-                console.log("emitting changes")
+                // console.log("emitting changes")
                 client.emit(`drawingLine:${drawingId}`, lineRow.new_val)
             });
         });

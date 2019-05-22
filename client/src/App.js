@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Our awesome drawing app</h2>
+          <h2>Live Sketch</h2>
         </div>
 
         {
